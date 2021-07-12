@@ -1,6 +1,6 @@
 import datetime as dt
 
-    
+
 class Record:
     """Ведет запись входных параметров"""
     def __init__(self, amount, comment, date=None):
@@ -10,14 +10,14 @@ class Record:
             self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
         else:
             self.date = dt.date.today()
-     
+    
 
 class Calculator:
     """Определяет лимит"""
     def __init__(self, limit) -> None:
         self.limit = limit
         self.records = []
- 
+
     def add_record(self, record):
         """Добавляет запись"""
         self.records.append(record)
@@ -55,7 +55,6 @@ class CashCalculator(Calculator):
     def __init__(self, limit: float):
         """Определяет лимит денег"""
         super().__init__(limit)
- 
 
     def get_today_cash_remained(self, currency):
         """Принимает траты денег за сегодня"""
@@ -74,7 +73,7 @@ class CashCalculator(Calculator):
             return ('Денег нет, держись: твой долг - '
                     f'{abs(cash_remained)} {cur_name}')
 
- 
+
 class CaloriesCalculator(Calculator):
 
     """Калькулятор каллорий"""
