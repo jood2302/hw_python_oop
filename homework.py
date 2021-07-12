@@ -10,7 +10,7 @@ class Record:
             self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
         else:
             self.date = dt.date.today()
-    
+   
 
 class Calculator:
     """Определяет лимит"""
