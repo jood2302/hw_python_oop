@@ -1,7 +1,6 @@
-from __future__ import annotations
 import datetime as dt
 
-
+    
 class Record:
     """Ведет запись входных параметров"""
     def __init__(self, amount, comment, date=None):
@@ -11,7 +10,7 @@ class Record:
             self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
         else:
             self.date = dt.date.today()
-       
+     
 
 class Calculator:
     """Определяет лимит"""
@@ -52,11 +51,12 @@ class CashCalculator(Calculator):
     RUB_RATE = 1
     USD_RATE = 74.42
     EURO_RATE = 88.35
- 
+
     def __init__(self, limit: float):
         """Определяет лимит денег"""
         super().__init__(limit)
  
+
     def get_today_cash_remained(self, currency):
         """Принимает траты денег за сегодня"""
         cash_remained = self.remained()
@@ -66,7 +66,6 @@ class CashCalculator(Calculator):
             'eur': ['Euro', self.EURO_RATE]}
         cur_name, cur_rate = currencies.get(currency)
         cash_remained = round(cash_remained / cur_rate, 2)
- 
         if cash_remained > 0:
             return f"На сегодня осталось {cash_remained} {cur_name}"
         elif cash_remained == 0:
@@ -77,6 +76,7 @@ class CashCalculator(Calculator):
 
  
 class CaloriesCalculator(Calculator):
+
     """Калькулятор каллорий"""
     def get_calories_remained(self):
         calories_remained = self.remained()
