@@ -25,7 +25,8 @@ class Calculator:
     def get_today_stats(self):
         """Считает сколько потрачено/съедено за сегодня"""
         today = dt.date.today()
-        summ = sum([record.amount for record in self.records if record.date == today])
+        summ = sum([record.amount for record in self.records 
+                    if record.date == today])
         return summ
 
     def get_week_stats(self):
@@ -33,7 +34,7 @@ class Calculator:
         today = dt.date.today()
         last_day = today - dt.timedelta(weeks=1)
         summ = sum([record.amount for record in self.records 
-        if last_day < record.date <= today])
+                    if last_day < record.date <= today])
         return summ
 
     def remain(self):
@@ -77,6 +78,7 @@ class CaloriesCalculator(Calculator):
                     f'не более {calories_remained} кКал')
         else:
             return 'Хватит есть!'
+
 
 if __name__ == "__main__":
     calor_calc = CaloriesCalculator(100)
