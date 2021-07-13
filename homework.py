@@ -25,7 +25,7 @@ class Calculator:
     def get_today_stats(self):
         """Считает сколько потрачено/съедено за сегодня"""
         today = dt.date.today()
-        summ = sum([record.amount for record in self.records 
+        summ = sum([record.amount for record in self.records
                     if record.date == today])
         return summ
 
@@ -33,7 +33,7 @@ class Calculator:
         """Считать, сколько потрачено/получено за последние 7 дней"""
         today = dt.date.today()
         last_day = today - dt.timedelta(weeks=1)
-        summ = sum([record.amount for record in self.records 
+        summ = sum([record.amount for record in self.records
                     if last_day < record.date <= today])
         return summ
 
