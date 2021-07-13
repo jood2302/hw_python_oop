@@ -25,23 +25,18 @@ class Calculator:
     def get_today_stats(self):
         """Считает сколько потрачено/съедено за сегодня"""
         today = dt.date.today()
-        summ = 0
-        for record in self.records:
-            if record.date == today:
-                summ += record.amount
+        summ = sum([record.amount for record in self.records if record.date == today])
         return summ
 
     def get_week_stats(self):
         """Считать, сколько потрачено/получено за последние 7 дней"""
         today = dt.date.today()
         last_day = today - dt.timedelta(weeks=1)
-        summ = 0
-        for record in self.records:
-            if last_day < record.date <= today:
-                summ += record.amount
+        summ = sum([record.amount for record in self.records 
+        if last_day < record.date <= today])
         return summ
 
-    def remained(self):
+    def remain(self):
         """Определяет сколько можно потратить/(можно или нужно получть)"""
         return self.limit - self.get_today_stats()
 
@@ -52,46 +47,42 @@ class CashCalculator(Calculator):
     USD_RATE = 74.42
     EURO_RATE = 88.35
 
-    def __init__(self, limit: float):
-        """Определяет лимит денег"""
-        super().__init__(limit)
-
-    def get_today_cash_remained(self, currency):
+    def get_today_cash_remain(self, currency):
         """Принимает траты денег за сегодня"""
-        cash_remained = self.remained()
+        cash_remain = self.remain()
         currencies = {
             'rub': ['руб', self.RUB_RATE],
             'usd': ['USD', self.USD_RATE],
             'eur': ['Euro', self.EURO_RATE]}
         cur_name, cur_rate = currencies.get(currency)
-        cash_remained = round(cash_remained / cur_rate, 2)
-        if cash_remained > 0:
-            return f"На сегодня осталось {cash_remained} {cur_name}"
-        elif cash_remained == 0:
+        if cash_remain == 0:
             return 'Денег нет, держись'
-        else:
+        cash_remained = round(cash_remain / cur_rate, 2)
+        if cash_remain > 0:
+            return f"На сегодня осталось {cash_remain} {cur_name}"
+        if cash_remain < 0:
+            cash_remain = abs(cash_remain)
             return ('Денег нет, держись: твой долг - '
-                    f'{abs(cash_remained)} {cur_name}')
+                    f'{cash_remained} {cur_name}')
 
 
 class CaloriesCalculator(Calculator):
 
     """Калькулятор каллорий"""
-    def get_calories_remained(self):
-        calories_remained = self.remained()
-        if calories_remained > 0:
+    def get_calories_remain(self):
+        calories_remain = self.remain()
+        if calories_remain > 0:
             return ('Сегодня можно съесть что-нибудь ещё, '
                     'но с общей калорийностью '
-                    f'не более {calories_remained} кКал')
+                    f'не более {calories_remain} кКал')
         else:
             return 'Хватит есть!'
 
-
-calor_calc = CaloriesCalculator(100)
-calor_calc.add_record(Record(70, 'Макдональдс'))
-print(calor_calc.get_calories_remained())
-
-calc_calc1 = CashCalculator(150)
-calc_calc1.add_record(Record(100, 'На пиво'))
-print(calc_calc1.get_today_cash_remained('eur'))
-print(calc_calc1.get_today_cash_remained('usd'))
+if __name__ == "__main__":
+    calor_calc = CaloriesCalculator(100)
+    calor_calc.add_record(Record(70, 'Макдональдс'))
+    calc_calc1 = CashCalculator(150)
+    calc_calc1.add_record(Record(100, 'На пиво ревьюеру :)'))
+    print(calor_calc.get_calories_remain())
+    print(calc_calc1.get_today_cash_remain('eur'))
+    print(calc_calc1.get_today_cash_remain('usd'))
